@@ -1,0 +1,143 @@
+name: SonarCloud
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  argsInputTest:
+    name: >
+      'args' input
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run action with args
+        uses: ./
+        with:
+          args: -Dsonar.someArg=aValue -Dsonar.scanner.dumpToFile=./output.properties
+        env:
+          SONAR_TOKEN: b9247835b18c08529263f4f3afbea8ba6b5f8e9b
+      - name: Assert
+        run: |
+          ./test/assertFileContains ./output.properties "sonar.someArg=aValue"
+  projectBaseDirInputTest:
+    name: >
+      'projectBaseDir' input
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - run: | 
+          mkdir -p ./baseDir
+      - name: Run action with projectBaseDir
+        uses: ./
+        with:
+          args: -Dsonar.scanner.dumpToFile=./output.properties
+          projectBaseDir: ./baseDir
+        env:
+          SONAR_TOKEN: b9247835b18c08529263f4f3afbea8ba6b5f8e9b
+      - name: Assert
+        run: |
+          ./test/assertFileContains ./output.properties "sonar.projectBaseDir=.*/baseDir"
+  sonarTokenRequiredTest:
+    name: >
+      'SONAR_TOKEN' env var required
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run action without SONAR_TOKEN
+        uses: ./
+        with:
+          args: -Dsonar.scanner.dumpToFile=./output.properties
+        continue-on-error: true
+      - name: Previous should have failed
+        if: ${{ steps.runTest.outcome == 'success'}}
+        run: |
+          echo "Expected previous step to fail"
+          exit 1
+  dontFailGradleTest:
+    name: >
+      Don't fail on Gradle project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run action on Gradle project
+        id: runTest
+        uses: ./
+        continue-on-error: true
+        env:
+          SONAR_TOKEN: b9247835b18c08529263f4f3afbea8ba6b5f8e9b
+        with:
+          projectBaseDir: ./test/gradle-project
+          args: -Dsonar.scanner.dumpToFile=./output.properties
+      - name: Assert
+        run: |
+          ./test/assertFileExists ./output.properties
+  dontFailGradleKotlinTest:
+    name: >
+      Don't fail on Kotlin Gradle project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run action on Kotlin Gradle project
+        id: runTest
+        uses: ./
+        continue-on-error: true
+        env:
+          SONAR_TOKEN: FAKE_TOKEN
+        with:
+          projectBaseDir: ./test/gradle-project-kotlin
+          args: -Dsonar.scanner.dumpToFile=./output.properties
+      - name: Assert
+        run: |
+          ./test/assertFileExists ./output.properties
+  dontFailMavenTest:
+    name: >
+      Don't fail on Maven project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run action on Maven project
+        id: runTest
+        uses: ./
+        continue-on-error: true
+        env:
+          SONAR_TOKEN: b9247835b18c08529263f4f3afbea8ba6b5f8e9b
+        with:
+          projectBaseDir: ./test/maven-project
+          args: -Dsonar.scanner.dumpToFile=./output.properties
+      - name: Assert
+        run: |
+          ./test/assertFileExists ./output.properties
+  runnerDebugUsedTest:
+    name: >
+      'RUNNER_DEBUG' is used
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run action with debug mode
+        uses: ./
+        with:
+          args: -Dsonar.scanner.dumpToFile=./output.properties
+        env:
+          RUNNER_DEBUG: 1
+          SONAR_TOKEN: b9247835b18c08529263f4f3afbea8ba6b5f8e9b
+      - name: Assert
+        run: |
+          ./test/assertFileContains ./output.properties "sonar.verbose=true"
