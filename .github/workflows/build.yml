@@ -21,10 +21,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-
-      # Build the project
-      - name: Build with Gradle
-        run: ./gradlew build
       
       # Run SonarCloud Scan
       - name: SonarCloud Scan
