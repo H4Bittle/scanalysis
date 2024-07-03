@@ -1,28 +1,29 @@
 {
   "name": "scanalysis",
   "version": "1.0.0",
-  "description": "A brief description of your project",
+  "description": "A sample project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "build": "your-build-command"
+    "build": "webpack --config webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/h4bittle/scanalysis.git"
+    "url": "git+https://github.com/your-username/scanalysis.git"
   },
-  "keywords": [],
-  "author": "h4bittle",
+  "keywords": ["node", "webpack", "sample"],
+  "author": "Your Name",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/h4bittle/scanalyis/issues"
+    "url": "https://github.com/your-username/scanalysis/issues"
   },
-  "homepage": "https://github.com/h4bittle/scanalyis#readme",
+  "homepage": "https://github.com/your-username/scanalysis#readme",
   "dependencies": {
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.2"
   }
 }
