@@ -1,0 +1,29 @@
+{
+  "name": "scanalysis",
+  "version": "1.0.0",
+  "description": "A brief description of your project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "build": "your-build-command"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/h4bittle/scanalysis.git"
+  },
+  "keywords": [],
+  "author": "h4bittle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/h4bittle/scanalyis/issues"
+  },
+  "homepage": "https://github.com/h4bittle/scanalyis#readme",
+  "dependencies": {
+    "nodemon": "latest"
+    "express":"latest"
+  },
+  "devDependencies": {
+    // Add your development dependencies here
+  }
+}
