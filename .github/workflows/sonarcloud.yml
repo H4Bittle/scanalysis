@@ -96,7 +96,7 @@ jobs:
         uses: ./
         continue-on-error: true
         env:
-          SONAR_TOKEN: FAKE_TOKEN
+          SONAR_TOKEN: b9247835b18c08529263f4f3afbea8ba6b5f8e9b
         with:
           projectBaseDir: ./test/gradle-project-kotlin
           args: -Dsonar.scanner.dumpToFile=./output.properties
