@@ -20,10 +20,9 @@
   },
   "homepage": "https://github.com/h4bittle/scanalyis#readme",
   "dependencies": {
-    "nodemon": "latest"
-    "express":"latest"
+    "express": "^4.17.1"
   },
   "devDependencies": {
-    // Add your development dependencies here
+    "nodemon": "^2.0.7"
   }
 }
